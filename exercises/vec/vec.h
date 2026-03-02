@@ -1,0 +1,36 @@
+#pragma once
+#include <iostream>
+#include <string>
+
+struct vec {
+    double x, y, z;
+
+    // constructors
+    vec(double x, double y, double z);  // parameterized
+    vec();                                  // default
+    vec(const vec&) = default;                                 // copy
+    vec(vec&&) = default;                                      // move
+    ~vec() = default;                                          // destructor
+
+    // assignment
+    vec& operator=(const vec&) = default;                     // copy assignment
+    vec& operator=(vec&&) = default;                          // move assignment
+
+    // arithmetic
+    vec& operator+=(const vec&);
+    vec& operator-=(const vec&);
+    vec& operator*=(double);
+    vec& operator/=(double);
+
+    double dot(const vec&) const;
+    vec cross(const vec&) const;
+    double norm() const;
+
+    // utility
+    void set(double, double, double);
+    void print(const std::string& s = "") const;              // for debugging
+
+    // stream output
+    friend std::ostream& operator<<(std::ostream&, const vec&);
+};
+
