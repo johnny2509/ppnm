@@ -3,35 +3,25 @@
 #include <iostream>
 
 int main(){
-
     vec a(1,2,3);
     vec b(4,5,6);
-
     // arithmetic
     vec c = a + b;
     assert(approx(c, vec(5,7,9)));
-
     vec d = b - a;
     assert(approx(d, vec(3,3,3)));
-
     vec e = 2*a;
     assert(approx(e, vec(2,4,6)));
-
     vec f = a/2;
     assert(approx(f, vec(0.5,1,1.5)));
-
     // dot
     assert(approx(a.dot(b), 32));
-
     // cross
     vec g = a.cross(b);
     assert(approx(g, vec(-3,6,-3)));
-
     // norm
     assert(approx(a.norm(), std::sqrt(14.0)));
-
     // printing
     std::cout << "a = " << a << std::endl;
-
     std::cout << "All tests passed\n";
 }

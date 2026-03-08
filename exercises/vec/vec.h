@@ -2,9 +2,9 @@
 #include <iostream>
 #include <string>
 
+// Task 1: class storing x, y, z doubles.
 struct vec {
     double x, y, z;
-
     // constructors
     vec(double x, double y, double z);  // parameterized
     vec();                                  // default
@@ -34,3 +34,14 @@ struct vec {
     friend std::ostream& operator<<(std::ostream&, const vec&);
 };
 
+// non-member operators
+vec operator-(const vec&);
+vec operator+(vec, const vec&);
+vec operator-(vec, const vec&);
+vec operator*(vec, double);
+vec operator*(double, vec);
+vec operator/(vec, double);
+
+// approx
+bool approx(double a, double b, double acc=1e-6, double eps=1e-6);
+bool approx(const vec&, const vec&, double acc=1e-6, double eps=1e-6);
