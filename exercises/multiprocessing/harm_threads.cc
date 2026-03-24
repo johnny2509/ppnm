@@ -2,9 +2,10 @@
 #include <iostream>
 #include <thread>
 #include <string>
+#include <vector>
+#include <functional>
 
 struct data {int a, b; double sum;};
-
 void harm(data& arg){
 	int a = arg.a, b = arg.b; // you better work
 	double sum = 0;        // with thread-local variables
@@ -14,7 +15,6 @@ void harm(data& arg){
 // Task 2: create main function that reads two parameters 
 // first one: number of threads to be created
 // second one: number of terms in the harm. sum to calculate 
-
 int main(int argc, char* argv[]){
 	int nthreads = 1, nterms = (int)1e8; /* default values */
 	for(int i=0;i<argc;i++) {
@@ -36,7 +36,6 @@ int main(int argc, char* argv[]){
 	// Task 4: run threads parallel
 	std::vector<std::thread> threads;
 	threads.reserve(nthreads); // reserve empty slots for our threads
-
 	for(int i=0;i<nthreads;i++) {
    		threads.emplace_back(harm,std::ref(params[i]));
    		}
@@ -45,6 +44,10 @@ int main(int argc, char* argv[]){
 	for(auto &thread : threads) thread.join();
 
 	// Task 6: calculate the total sum
-	double total=0; for(auto &p in params) total+=p.sum;
+	double total = 0; for(auto &p : params) total += p.sum;
+
+	std::cout << "Harmonic sum = " << total << "\n";
+
+	return 0;
 
 }
