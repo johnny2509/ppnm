@@ -13,10 +13,11 @@ constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
 double lngamma(double x){
 	if (x<=0) return NaN; //updated for task 3
 	if (x<9) return lngamma(x+1) - std::log(x);
+
 	double lnfgamma = x * std::log(x + 1 / (12 * x - 1 / x / 10)) - x + std::log(2 * PI / x) / 2;
 	return lnfgamma; // modified for task 3
-	}
+}
 double fgamma(double x){
         return std::exp(lngamma(x));               
-        }
+}
 }
