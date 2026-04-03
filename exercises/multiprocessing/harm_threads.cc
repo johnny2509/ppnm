@@ -12,9 +12,11 @@ void harm(data& arg){
 	for (int i = a; i < b; i++)sum += 1.0 / i;
 	arg.sum = sum; // only write once into memory
 }
+
 // Task 2: create main function that reads two parameters 
 // first one: number of threads to be created
 // second one: number of terms in the harm. sum to calculate 
+
 int main(int argc, char* argv[]){
 	int nthreads = 1, nterms = (int)1e8; /* default values */
 	for(int i=0;i<argc;i++) {
@@ -22,8 +24,6 @@ int main(int argc, char* argv[]){
    		if(arg=="-threads" && i+1<argc) nthreads=std::stoi(argv[i+1]);
    		if(arg=="-terms" && i+1<argc) nterms=std::stoi(argv[i+1]);
    	}
-	std::cout << "Threads: " << nthreads << "\n";
-	std::cout << "Terms: " << nterms << "\n";
 
 	// Task 3: prepare data-objects to be used locally in separate threads
 	std::vector<data> params(nthreads);
