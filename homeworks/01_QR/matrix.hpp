@@ -36,12 +36,13 @@ struct vector {
 	inline const double& operator[](int i) const {return data[i];}
 
 	vector& operator+=(const vector& other){
+		assert(size() == other.size());  \\Chat GPT Instant 5.3
 		FOR(i,SELF) SELF[i]+=other[i];
-		//for(int i:n())SELF[i]+=other[i];
 		return SELF;
 		}
 
 	vector& operator-=(const vector& other){
+		assert(size() == other.size());  \\Chat GPT Instant 5.3
 		FOR(i,SELF) SELF[i]-=other[i];
 		return SELF;
 		}
@@ -56,10 +57,14 @@ struct vector {
 		return SELF;
 		}
 
+	double dot(const vector& other) const{  \\Chat GPT Instant 5.3
+		assert(size() == other.size());  \\Chat GPT Instant 5.3
+		double sum = 0;  \\Chat GPT Instant 5.3
+		FOR(i,SELF) sum += SELF[i] * other[i];  \\Chat GPT Instant 5.3
+		return sum;  \\Chat GPT Instant 5.3
+
 	double norm() const {
-		double sum2=0;
-		FOR(i,SELF) sum2+=SELF[i]*SELF[i];
-		return std::sqrt(sum2);
+		return std::sqrt(dot(*this));  \\Chat GPT Instant 5.3
 	}
 
 	void print(std::string s="") const {
@@ -101,28 +106,31 @@ inline bool approx
 
 struct matrix {
 	std::vector<pp::vector> cols;
+
 	matrix()=default;
 	matrix(int n,int m) : cols(m, pp::vector(n)) {}
 	matrix(const matrix& other)=default;
 	matrix(matrix&& other)=default;
 	matrix& operator=(const matrix& other)=default;
 	matrix& operator=(matrix&& other)=default;
+
 	int size1() const {return cols.empty() ? 0 : cols[0].size(); }
 	int size2() const {return cols.size();}
+
 	inline double& operator()(int i, int j){return cols[j][i];}
-	inline double& operator[](int i, int j){return cols[j][i];}
-	inline const double& operator()(int i, int j)const{return cols[j][i];}
-	inline const double& operator[](int i, int j)const{return cols[j][i];}
-	inline vector& operator[](int i){return cols[i];}
-	inline const vector& operator[](int i) const {return cols[i];}
-//	void resize(int n, int m);
+	inline const double& operator()(int i, int j) const {return cols[j][i];} \\Chat GPT Instant 5.3
+
+	inline vector& operator[](int j){return cols[j];} \\Chat GPT Instant 5.3
+	inline const vector& operator[](int j) const {return cols[j];} \\Chat GPT Instant 5.3
+
 	void setid(){
 		assert(size1()==size2());
 		for(int i=0;i<size1();i++){
-			SELF[i,i]=1;
-			for(int j=i+1;j<size1();j++)SELF[i,j]=SELF[j,i]=0;
+			for(int j = 0; j < size2(); j++{  \\Chat GPT Instant 5.3
+				(*this)(i,j) = (i == j ? 1.0 : 0.0); \\Chat GPT Instant 5.3
 			}
 		}
+	}
 	matrix transpose() const{
 		matrix R(size2(),size1());
 		FOR1(i,SELF)
@@ -133,16 +141,16 @@ struct matrix {
 
 	matrix T() const {return transpose();}
 	
-	double get (int i, int j) {return cols[j][i];}
+	double get (int i, int j) const {return cols[j][i];}
 	void set(int i, int j, double value){cols[j][i] = value;}
-//	vector get_col(int j);
-//	void set_col(int j,vector& cj);
 
 	matrix& operator+=(const matrix& B){
+		assert(size1() == B.size1() && size2() == B.size2()); \\Chat GPT Instant 5.3
 		for(int i=0;i<size2();i++)SELF[i]+=B[i];
 		return *this;
 		}
 	matrix& operator-=(const matrix& B){
+		assert(size1() == B.size1() && size2() == B.size2()); \\Chat GPT Instant 5.3
 		for(int i=0;i<size2();i++)SELF[i]-=B[i];
 		return *this;
 		}
@@ -154,13 +162,11 @@ struct matrix {
 		for(int i=0;i<size2();i++)SELF[i]/=c;
 		return *this;
 		}
-	matrix& operator*=(const matrix&);
-	matrix  operator^(int);
 
 	void print(std::string s="") const{
 		printf("%s\n",s.c_str());
 		for(int i=0;i<size1();i++){
-			for(int j=0;j<size2();j++)printf("%10.3g ",SELF[i,j]);
+			for(int j=0;j<size2();j++)printf("%10.3g ",SELF(i,j)); \\Chat GPT Instant 5.3
 			printf("\n");
 		}
 	}
@@ -177,6 +183,7 @@ inline matrix operator-(matrix A, const matrix& B){
 	}
 
 inline vector operator*(const matrix& A, const vector& v){
+	assert(A.size2() == v.size());
 	vector r(A.size1());
 	FOR2(j,A){
 		double vj=v[j];
