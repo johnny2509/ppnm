@@ -241,5 +241,64 @@ struct qr {
 			}
 		}
 	}
+
+	// Task A, 3.
+	// Method pp::vector solve (pp::vector b) to solve QRx = b
+	// This block of code was realized with Chat GPT Instant 5.3
+
+	vector solve(const vector& b) const{
+		assert(Q.size1() == b.size());
+
+		int m = R.size1();
+		vector c = Q.T() * b;
+		vector x(m);
+
+		for(int i = m - 1; i >= 0; i--){
+			double sum = c[i];
+			for(int j = i + 1; j < m; j++){
+				sum -= R(i, j) * x[j];
+			}
+			x[i] = sum / R(i, i);
+		}
+		return x;
+	}
+
+	// Task A, 4.
+	// Method double det() which returns the determinant of matrix R
+	// R is upper triangular, meaning that its determinant is the product of its diagonal entries
+
+	double det() const{
+		assert(R.size1() == R.size2());
+
+		int m = R.size1();
+
+		double prod = 1;
+
+		for(int i = 0; i < m; i++){
+			prod *= R(i, i);
+		}
+		return prod;
+	}
+
+	// Task B.
+	// Method inverse, where the inverse of A = QR is calculated 
+	// // This block of code was realized with Chat GPT Instant 5.3, 
+	// and inspired by this source: https://phys.au.dk/~fedorov/Numeric/12/lineq.pdf
+	// A^-1 for a n x n matrix A is calculated be solving n linear equations of A*x_i=z_i.
+
+	matrix inverse() const{
+		assert(R.size1() == R.size2());
+
+		int n = R.size1();
+		matrix B(n, n);
+
+		for(int i = 0; i < n; i++){
+			vector e(n); // basis vector 
+			e[i] = 1.0;
+			B[i] = solve(e);
+		}
+		return B;
+	}    
+
 };
 } // pp
