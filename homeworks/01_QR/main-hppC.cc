@@ -1,8 +1,7 @@
 #include"matrix.hpp"
 #include <cstdlib>
 #include <ctime>
-#include<cstring>
-#include<iostream>
+#include <cstring>
 
 pp::matrix random_matrix(int n, int m){
 	pp::matrix A(n, m);
@@ -14,12 +13,12 @@ pp::matrix random_matrix(int n, int m){
 	return A;
 }
 
-int main(){
-	srand(time(nullptr));
+int main(int argc, char** argv){
+	srand((unsigned)time(nullptr)); // "unsigned" to make the Makefile work and compatible with macOS
 
 	int n = 100;
 
-	for(int i = 0; i < argc; i++){
+	for(int i = 1; i < argc; i++){
 		if(std::strcmp(argv[i], "-size") == 0 && i + 1 < argc){
 			n = std::atoi(argv[i+1]);
 			i++;

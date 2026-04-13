@@ -1,21 +1,17 @@
-CXXFLAGS += -std=c++23 -I. -Wall -Wextra -Werror #-DLONG_DOUBLE
-LDLIBS += -lstdc++ -lm
+CXX = g++
+CXXFLAGS = -std=c++17 -O2 -Wall -Wextra -Wpedantic
 
-Out.txt : main-hpp main-h Makefile
+mainC: main-hppC.cc
+	$(CXX) $(CXXFLAGS) main-hppC.cc -o mainC
+
+out.times.data: mainC
 	>$@
-	echo "\nBoth interface and implementation in matrix.hpp\n" >>$@
-	./$(word 1,$^) >> $@
-	echo "\nInterface in .h, implementation in matrix.cc\n" >>$@
-	./$(word 2,$^) >> $@
-
-main-hpp.o : matrix.hpp
-main-h.o : matrix.h
-matrix.o : matrix.h
-main-h : main-h.o matrix.o
+	for N in $$(seq 300 50 1500); do \
+		./mainC -size $$N > /dev/null 2>&1; \
+		/usr/bin/time -p -o .time.tmp ./mainC -size $$N > /dev/null 2>&1; \
+		awk '/^real /{gsub(",", ".", $$2);  print "'$$N'", $$2}' .time.tmp >> $@ ; \
+	done
+	rm -f .time.tmp
 
 clean:
-	$(RM) [Oo]ut* main* *.o
-test:
-	echo $(findstring clang++,$(CXX)) 
-	echo $(CXX)
-	echo $(CXXFLAGS)
+	rm -f mainC out.times.data out err .time.tmp
