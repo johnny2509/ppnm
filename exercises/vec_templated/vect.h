@@ -8,14 +8,14 @@
 #include <cmath>
 #include <algorithm>
 
-template <typename T>
-struct vec {
+template <typename T> // Chat GPT Instant 5.3
+struct vec { // Chat GPT Instant 5.3
 
-    T x, y, z;
+    T x, y, z; // Chat GPT Instant 5.3
 
     // constructors
-    vec(T x_, T y_, T z_) : x(x_), y(y_), z(z_) {} 
-    vec() : vec(0, 0, 0) {}                        
+    vec(T x_, T y_, T z_) : x(x_), y(y_), z(z_) {} // Chat GPT Instant 5.3
+    vec() : vec(0, 0, 0) {} // Chat GPT Instant 5.3                        
          
     vec(const vec&) = default;                                 // copy
     vec(vec&&) = default;                                      // move
@@ -108,7 +108,7 @@ vec<T> operator/(vec<T> v, T d){
 }
 
 // stream output
-template <typename T>
+template <typename T> // Chat GPT Instant 5.3
 std::ostream& operator<<(std::ostream& os, const vec<T>& v){
 	os << "{ " << v.x << ", " << v.y << ", " << v.z << " }";
 	return os;
@@ -122,7 +122,7 @@ bool approx(T a, T b, T acc=1e-6, T eps=1e-6){
 	return false;
 }
 // vector approximation
-template <typename T>
+template <typename T> // Chat GPT Instant 5.3
 bool approx(const vec<T>& a, const vec<T>& b, T acc=1e-6, T eps=1e-6){
 	if (!approx(a.x, b.x, acc, eps)) return false;
         if (!approx(a.y, b.y, acc, eps)) return false;
