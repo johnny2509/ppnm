@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <utility>
+#include <utility> // Chat GPT Instant 5.3
 #include <limits>
 #include "gnuplot-iostream.h"
 
@@ -14,15 +14,15 @@ double lngamma(double x){
 	return x*std::log(x+1/(12*x-1/x/10))-x+std::log(2*PI/x)/2;
 }
 
-int main(){
+int main(){ // Chat GPT Instant 5.3
         
-        std::vector <std::pair <double, double>> lngamma_curve;
+        std::vector <std::pair <double, double>> lngamma_curve; // Chat GPT Instant 5.3
 
-        for(double x = 0.001; x <= 3.2; x += 0.05){
-                lngamma_curve.push_back({x, lngamma(x+1)});
+        for(double x = 0.001; x <= 3.2; x += 0.05){ // Chat GPT Instant 5.3
+                lngamma_curve.push_back({x, lngamma(x+1)}); // Chat GPT Instant 5.3
         }
 
-        Gnuplot gp;
+        Gnuplot gp; // Chat GPT Instant 5.3
         gp << "set xrange [-0.1:3.2]\n";
         gp << "set yrange [-0.4:2.5]\n";
         gp << "set grid\n";
