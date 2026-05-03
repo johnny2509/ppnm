@@ -1,7 +1,7 @@
 #include "vect.h"
 #include <iostream>
 
-int main(){
+int main(){ // Chat GPT Instant 5.3
 
     vec<double> a(1.0,2.0,3.0);
     vec<double> b(4.0,5.0,6.0);
