@@ -1,23 +1,23 @@
 #include<cmath>
 #include<numbers> // c++20
-#include<limits>
+#include<limits> // Chat GPT Instant 5.3
 #include"sfuns.h"
 
 namespace sfuns{
 
 constexpr double PI = std::numbers::pi; // c++20
-constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
+constexpr double NaN = std::numeric_limits<double>::quiet_NaN(); // Chat GPT Instant 5.3
 
 // constexpr double PI = 3.14159265358979323846; // pre- c++20
 
 double lngamma(double x){
-	if (x<=0) return NaN; //updated for task 3
-	if (x<9) return lngamma(x+1) - std::log(x);
+	if (x<=0) return NaN; //updated for task 3, Chat GPT Instant 5.3
+	if (x<9) return lngamma(x+1) - std::log(x); // Chat GPT Instant 5.3
 
 	double lnfgamma = x * std::log(x + 1 / (12 * x - 1 / x / 10)) - x + std::log(2 * PI / x) / 2;
-	return lnfgamma; // modified for task 3
+	return lnfgamma; // modified for task 3, Chat GPT Instant 5.3 
 }
 double fgamma(double x){
-        return std::exp(lngamma(x));               
+        return std::exp(lngamma(x)); // Chat GPT Instant 5.3            
 }
 }
