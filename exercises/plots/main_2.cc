@@ -14,28 +14,28 @@ double my_sgamma(double x){
     	+ (1.0 / 12) / x - (1.0 / 360) / (x * x * x) + (1.0 / 1260) / (x * x * x * x * x);
 	return std::exp(lnsgamma);
 }
-double stirling(double x){
+double stirling(double x){ // Chat GPT Instant 5.3
 	if (x==0) return 0;
 	return std::sqrt(2 * PI * x) * std::pow(x / std::exp(1.0), x);
 }
 
-int main(){
+int main(){ // Chat GPT Instant 5.3
         std::vector <std::pair <double, double>> gamma_curve;
 	std::vector <std::pair <double, double>> stirling_curve;
 
-        for(double x = 0.001; x <= 3.2; x += 0.05){
+        for(double x = 0.001; x <= 3.2; x += 0.05){ // Chat GPT Instant 5.3
                 gamma_curve.push_back({x, my_sgamma(x + 1)}); // + 1 was added to match wikipedia plot
-        	stirling_curve.push_back({x, stirling(x)});
+        	stirling_curve.push_back({x, stirling(x)}); // Chat GPT Instant 5.3
 	}
 
-        Gnuplot gp;
-	gp << "set xrange [0:3.2]\n";
-	gp << "set yrange [0:6.5]\n";
-	gp << "set grid\n";
-	gp << "plot "
+        Gnuplot gp; // Chat GPT Instant 5.3
+	gp << "set xrange [0:3.2]\n"; // Chat GPT Instant 5.3
+	gp << "set yrange [0:6.5]\n"; // Chat GPT Instant 5.3
+	gp << "set grid\n"; // Chat GPT Instant 5.3
+	gp << "plot " // Chat GPT Instant 5.3
 	      "'-' with lines lw 2 title 'Gamma(x+1)', "
               "'-' with lines lw 2 title 'sqrt(2*pi*x)(x/e)^x', "
               "'wiki_fact.dat' with points pt 7 ps 1.5 title 'n!'\n";
-        gp.send1d(gamma_curve);
-	gp.send1d(stirling_curve);
+        gp.send1d(gamma_curve); // Chat GPT Instant 5.3
+	gp.send1d(stirling_curve); // Chat GPT Instant 5.3
 }
