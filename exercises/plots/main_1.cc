@@ -18,7 +18,7 @@ double my_erf(double x){
 	return 1 - sum * std::exp(-x * x); 
 }
 
-int main(){
+int main(){ // Chat GPT Instant 5.3
 
 	std::vector <std::pair <double, double>> curve;
 
