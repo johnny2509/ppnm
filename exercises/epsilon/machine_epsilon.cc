@@ -20,8 +20,8 @@ int main() {
 	std::cout << std::numeric_limits<double>::epsilon() << "\n";
 	std::cout << std::numeric_limits<long double>::epsilon() << "\n";
 	
-	float x = std::pow(2.0f, -23);
-	double y = std::pow(2.0, -52);
+	float x = std::pow(2.0f, -23); // Chat GPT Instant 5.3
+	double y = std::pow(2.0, -52); // Chat GPT Instant 5.3
 
 	std::printf("precision for single (float): %g\n ", x);
 	std::printf("precision for double: %g\n", y);
