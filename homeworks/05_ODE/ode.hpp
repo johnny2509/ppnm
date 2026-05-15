@@ -35,7 +35,8 @@ std::tuple<std::vector<double>, std::vector<vector>> driver(
 	vector yinit,                            // y(initial-point) 
 	double h=0.125,                          // initial step-size 
 	double acc=0.01,                         // absolute accuracy goal 
-	double eps=0.01                          // relative accuracy goal 
+	double eps=0.01,                         // relative accuracy goal 
+	double hmax=0.1                          // Chat GPT Instant 5.3
 ){
 	double x=a; 
 	vector y(yinit);
@@ -62,6 +63,7 @@ std::tuple<std::vector<double>, std::vector<vector>> driver(
 			h *= std::min(std::pow(tol/err, 0.25) * 0.95, 2.0); // Chat GPT Instant 5.3
 		else 
 			h*=2;
+		h = std::min(h, hmax); // Chat GPT Instant 5.3
 	}
 	return {xlist, ylist};
 }
