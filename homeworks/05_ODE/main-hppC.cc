@@ -57,20 +57,23 @@ int main(){
 		return dzdt;
 	};
 
+	// Initial conditions from https://www.researchgate.net/publication/369759901_The_remarkable_figure-8_solution_of_the_three-body_problem
+
 	pp::vector z0 = {
 		0.4662036850, 0.4323657300,
-		0.4662036850, 0.4323657300,
 		-0.9324073700, -0.8647314600,
-		0.97000436, -0.24308753,
-		-0.7000436, 0.24308753,
-		0.0, 0.0
+		0.4662036850, 0.4323657300,
+	
+		-0.97000436, 0.24308753,
+		0.0, 0.0,
+		0.97000436, -0.24308753
 	};
 
-	double T = 6.3259;
+	double T = 6.3259; // approximate period of figure 8 orbit
 
-	auto [ts, zs]=pp::driver(threebody, 0.0, T, z0, 0.001, 1e-7, 1e-7, 0.01);
+	auto [ts, zs]=pp::driver(threebody, 0.0, T, z0, 0.0001, 1e-7, 1e-7, 0.001);
 
-	for(size_t i = 0, i < ts.size(); i++){
+	for(size_t i = 0; i < ts.size(); i++){
 		std::cout << ts[i] << " "
 			  << zs[i][6] << " " << zs[i][7] << " "
 			  << zs[i][8] << " " << zs[i][9] << " "
