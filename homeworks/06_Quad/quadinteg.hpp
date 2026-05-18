@@ -22,7 +22,6 @@ double integrate(
 		f2=f(a+2*h/6);
 		f3=f(a+4*h/6);
 	}
-
 	double f1=f(a+h/6); 
 	double f4=f(a+5*h/6);
 
@@ -40,6 +39,58 @@ double integrate(
 		return integrate(f, a, mid, acc/std::sqrt(2.0), eps, f1, f2)
 		+ integrate(f, mid, b, acc/std::sqrt(2.0), eps, f3, f4);
 	}
+}
+
+// Task B, Clenshaw-Curtis variable transformation
+template<typename F>
+double clenshaw_curtis(
+	F f,
+	double a,
+	double b,
+	double acc = 1e-3,
+	double eps = 1e-3
+){
+	auto g = [=](double theta){
+		double x = (a+b)/2 + (b-a)/2*std::cos(theta);
+		return f(x)*std::sin(theta)*(b-a)/2;
+	};
+	return integrate(g, 0.0, std::acos(-1.0), acc, eps);
+}
+
+template<typename F>
+double intinf(
+	F f,
+        double a,
+        double b,
+        double acc = 1e-3,
+        double eps = 1e-3
+){
+	if(std::isinf(a) && std::isinf(b)){ // for [-inf, +inf]
+		auto g = [=](double t){
+			double x = t/(1-t*t);
+			double dxdt = (1+t*t)/((1-t*t)*(1-t*t));
+			return f(x)*dxdt;
+		};
+		return clenshaw_curtis(g, -1.0, 1.0, acc, eps);
+	}
+	if(std::isinf(b)){ // for [a, +inf] 
+		auto g = [=](double t){
+			double x = a+t/(1-t);
+			double dxdt = 1/((1-t)*(1-t));
+			return f(x)*dxdt;
+		};
+		return clenshaw_curtis(g, 0.0, 1.0, acc, eps);
+	}
+	if(std::isinf(a)){ // for [-inf, b]
+		auto g = [=](double t){
+			double x = b-(1-t)/t;
+			double dxdt = 1/(t*t);
+			return f(x)*dxdt;
+		};
+		return clenshaw_curtis(g, 0.0, 1.0, acc, eps);
+	}
+
+	return clenshaw_curtis(f, a, b, acc, eps);
 }
 
 inline double erf_integral(double z, double acc=1e-6, double eps=1e-6){
