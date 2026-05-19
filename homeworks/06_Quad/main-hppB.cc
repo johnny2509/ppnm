@@ -8,8 +8,8 @@
 int main(){
 	std::cout << std::setprecision(15);
 
-	double acc=1e-6;
-	double eps=1e-6;
+	double acc=1e-4;
+	double eps=1e-4;
 	
 	// Calculate some integrals with integrable divergencies at 
 	// the end-points of the intervals; record the number of 
@@ -79,7 +79,33 @@ int main(){
 	std::cout << "exact = " << std::sqrt(std::acos(-1.0)) << "\n";
 	std::cout << "calls = " << calls << "\n";
 
+
+	// test the infinite limit implementation with 
+	// setting the integral of 1/(1+x^2) equal to pi on [-inf, inf]
+
+	calls = 0;
+
+	auto cauchy = [&](double x){
+		calls++;
+		return 1.0/(1+x*x);
+	};
+
+	double pi = std::acos(-1.0);
+
+	double res2 = pp::intinf(
+		cauchy,
+		-std::numeric_limits<double>::infinity(),
+                std::numeric_limits<double>::infinity(),
+                1e-6,
+                1e-6
+        );
+
+	std::cout << "\nIntegral 1/(1+x*x) from -inf to inf\n";
+        std::cout << "result = " << res2 << "\n";
+        std::cout << "exact = " << pi << "\n";
+        std::cout << "calls = " << calls << "\n";
+
+
 	return 0;
-}
 
 }
