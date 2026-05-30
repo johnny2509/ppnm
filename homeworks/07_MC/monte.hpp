@@ -1,6 +1,8 @@
 #pragma once
 #include <cmath>
 #include <utility>
+#include <array>
+#include <random>
 #include "matrix.hpp" // reused from the QR homework
 
 // Task A, 1: Monte Carlo multi-dimensional integrator
@@ -69,7 +71,74 @@ inline double corput(int n, int base){
 	double q = 0.0;
 	double bk = 1.0/base;
 
-	while(n > 
+	while(n > 0){
+		q += (n%base)*bk;
+		n /= base;
+		bk /= base;
+	}
 
+	return q; 
+}
+
+inline pp::vector halton(int n, int dim, int shift = 0){
+	static const int primes[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+
+	pp::vector x(dim);
+
+	for(int i = 0; i<dim; i++){
+		x[i] = corput(n+shift, primes[i]);
+	}
+
+	return x;
+}
+
+template<typename F>
+double quasimc(
+	F f,
+	const pp::vector& a,
+	const pp::vector& b,
+	int N,
+	int shift = 0
+){
+	int dim = a.size();
+
+	double V = 1.0;
+	for(int i = 0; i<dim; i++){
+		V *= b[i]-a[i];
+	}
+
+	double sum = 0.0;
+
+	for(int n = 0; n<N; n++){
+		pp::vector u = halton(n+1, dim, shift);
+		pp::vector x(dim);
+
+		for(int i = 0; i<dim; i++){
+			x[i]=a[i]+u[i]*(b[i]-a[i]);
+		}
+
+		sum += f(x);
+	}
+
+	return V*sum/N;
 
 }
+
+template<typename F>
+std::pair<double, double> quasimc_error(
+        F f,
+        const pp::vector& a,
+        const pp::vector& b, 
+        int N
+){
+
+	double result1 = quasimc(f,a,b,N,0);
+	double result2 = quasimc(f,a,b,N,1000000);
+
+	double result = 0.5*(result1+result2);
+	double error = std::abs(result1-result2);
+
+	return {result, error};
+}
+
+} //pp
