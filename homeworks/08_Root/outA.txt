@@ -1,0 +1,13 @@
+root of x^2 - 2 =       1.41 
+sqrt(2) = 1.4142135623731
+
+root of linear 2D system =          2          1 
+expected: x = 2, y = 1
+
+Rosenbrock minimum =          1          1 
+expected: x = 1, y = 1
+
+Himmelblau minimum 1 =          3          2 
+Himmelblau minimum 2 =      -2.81       3.13 
+Himmelblau minimum 3 =      -3.78      -3.28 
+Himmelblau minimum 4 =       3.58      -1.85 

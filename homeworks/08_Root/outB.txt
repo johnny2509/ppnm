@@ -1,0 +1,27 @@
+H-atom s-wave shooting method
+rmin = 0.001
+rmax = 8
+acc  = 1e-06
+eps  = 1e-06
+Numerical ground state energy E0 = -0.499975102385677
+Exact ground state energy        = -0.5
+Absolute error                   = 2.48976143230606e-05
+
+Starting rmax convergence
+Trying rmax = 4
+rmax = 4, E0 = -0.483265303334583, err = 0.0167346966654168
+Trying rmax = 5
+rmax = 5, E0 = -0.496417008160374, err = 0.00358299183962618
+Trying rmax = 6
+rmax = 6, E0 = -0.499277288139447, err = 0.000722711860553227
+Trying rmax = 7
+rmax = 7, E0 = -0.499862579461719, err = 0.000137420538280975
+Trying rmax = 8
+rmax = 8, E0 = -0.499975102385759, err = 2.48976142409041e-05
+Trying rmax = 10
+rmax = 10, E0 = -0.49999926526528, err = 7.34734719898267e-07
+Trying rmax = 12
+rmax = 12, E0 = -0.499999982155468, err = 1.78445321297183e-08
+Saved wave-function to wavefunctionB.txt
+Saved rmax convergence to convergence_rmaxB.txt
+Saved rmin convergence to convergence_rminB.txt
