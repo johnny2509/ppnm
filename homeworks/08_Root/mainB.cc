@@ -85,6 +85,12 @@ int main(){
 
 	wf.close();
 
+	// We found E0=-1/2, and f0(r)=r*exp(-r), then we 
+	// have that f0'(r)=(1-r)*exp(-r), and then
+	// f0''(r)=(r-2)*exp(-r), and then we can check that 
+	// -1/2 f0''(r) - 1/r f0(r) = -1/2 (r-2)*exp(-r) - exp(-r) 
+	// and reduced to -1/2 f0, therefore, giving us E0 = -1/2.
+
 	// Convergence of rmax
 
 	std::ofstream conv_rmax("convergence_rmaxB.txt");
@@ -125,7 +131,7 @@ int main(){
 	std::ofstream conv_rmin("convergence_rminB.txt");
 	conv_rmin << "# rmin E0 abs_error\n";
 
-	for(double R0 : {1e-1,5e-2,1e-2,5e-3,1e-3,5e-4,1e-4}){
+	for(double R0 : {5e-1,1e-1,5e-2,1e-2,5e-3,1e-3,5e-4,1e-4}){
 		rmin = R0;
 		
 		vecfunc MR0 = [&](const vector& x){
@@ -155,7 +161,7 @@ int main(){
 	std::ofstream conv_acc("convergence_accB.txt");
         conv_acc << "# acc E0 abs_error\n";
 
-        for(double A : {1e-3,1e-4,1e-5,1e-6,1e-7,1e-8}){
+        for(double A : {1e-2,1e-3,1e-4,1e-5,1e-6,1e-7,1e-8}){
                 acc = A;
 
                 vecfunc MA = [&](const vector& x){
@@ -177,7 +183,7 @@ int main(){
 	std::ofstream conv_eps("convergence_epsB.txt");
         conv_eps << "# eps E0 abs_error\n";
                         
-        for(double EP : {1e-3,1e-4,1e-5,1e-6,1e-7,1e-8}){
+        for(double EP : {1e-2,1e-3,1e-4,1e-5,1e-6,1e-7,1e-8}){
                 eps = EP; 
                   
                 vecfunc ME = [&](const vector& x){
