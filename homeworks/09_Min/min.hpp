@@ -32,14 +32,14 @@ matrix hessian(func phi, vector x){
     vector gx = gradient(phi, x);
 
     for(int j=0; j<n; j++){
-        double dxj = (1+std::abs(x[j])) * std::pow(2,-13);
+        double dxj = (1+std::abs(x[j])) * std::pow(2,-13); // delta x ~ epsilon^(1/4), try also delta x ~ epsilon^(1/3)
         x[j] += dxj;
         vector dg = gradient(phi, x) - gx;
         for(int i=0; i<n; i++){
             H(i, j) = dg[i] / dxj;
         
         }
-        
+
         x[j] -= dxj;
     }
 
@@ -48,22 +48,23 @@ matrix hessian(func phi, vector x){
 
 // The Newton minimization method:
 vector newton(func phi, vector x, double acc=1e-3, int max_steps=1000, int* steps=nullptr){
-    int k = 0;
-    while(k < max_steps){
+
+    int k = 0; // initialization for step counter
+    while(k < max_steps){ // Newton iterations
         vector g = gradient(phi, x);
-        if(g.norm() < acc) break;
+        if(g.norm() < acc) break; // convergence check: job done
 
         matrix H = hessian(phi, x);
 
         for(int i=0; i<H.size1(); i++)
-            H(i, i) += 1e-6; 
+            H(i, i) += 1e-6; // Levenberg regularization
 
-        vector dx = qr(H).solve(-g);
+        vector dx = qr(H).solve(-g); // "qr" reused from homework 01_QR
 
         double phix = phi(x);
         double lambda = 1.0;
 
-        while(lambda >= 1.0/1024){
+        while(lambda >= 1.0/1024){ // backtracking linesearch
             if(phi(x + lambda * dx) < phix) break;
             lambda /= 2;
         }
