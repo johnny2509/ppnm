@@ -25,17 +25,17 @@ int main(){
     }
 
     pp::ann network(n_neurons);
-    network.train(x, y);
+    network.trainB(x, y);
 
     std::ofstream data("outB.txt");
 
     for(int i=0; i<N; i++){
         data << x[i] << " " 
         << y[i] << " " 
-        << network.response(x[i]) << " "
-        << network.derivative(x[i]) << " "
-        << network.second_derivative(x[i]) << " "
-        << network.antiderivative(x[i]) << "\n";
+        << network.responseB(x[i]) << " "
+        << network.derivativeB(x[i]) << " "
+        << network.second_derivativeB(x[i]) << " "
+        << network.antiderivativeB(x[i]) << "\n";
     }
 
     data.close();

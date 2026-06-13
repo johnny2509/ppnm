@@ -5,7 +5,7 @@
 #include <cmath>
 
 double g(double x){
-    return std::cos(5*x-1) * std::exp(-x*x);
+    return std::cos(5*x-1) * std::exp(-x*x); // Chat GPT Instant 5.3
 }
 
 int main(){
@@ -19,7 +19,7 @@ int main(){
     double end = 1.0;
     double dx = (end-start)/(N-1); // divide the interval into N-1 segments
 
-    for(int i=0; i<N; i++){
+    for(int i=0; i<N; i++){ // Chat GPT Instant 5.3
         x[i] = start+i*dx;
         y[i] = g(x[i]);
     }

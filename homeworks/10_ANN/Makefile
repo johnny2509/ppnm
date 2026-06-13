@@ -22,5 +22,8 @@ runB: mainB
 outB.txt: mainB
 	./mainB > outB.txt
 
+plotB: outB.txt
+	gnuplot plotB.gp
+
 clean:
-	rm -f mainA mainB outA.txt outB.txt ann.png
+	rm -f mainA mainB outA.txt outB.txt ann.png annB.png derivativeB.png second_derivativeB.png anti_derivativeB.png
