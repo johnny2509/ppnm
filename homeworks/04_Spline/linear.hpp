@@ -46,6 +46,7 @@ double linterpInteg(const vector& x, const vector& y, double z){
 
 	double dz = z - x[iz];
 	double h = x[iz+1] - x[iz];
+	assert(h > 0);
 	double slope = (y[iz+1] - y[iz])/h;
 	sum += y[iz] * dz + 0.5 * slope * dz * dz;
 
