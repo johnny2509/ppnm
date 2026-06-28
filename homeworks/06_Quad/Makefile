@@ -1,7 +1,15 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -O2 -Wall
+GNUPLOT = gnuplot
 
-all: mainA mainB
+.PHONY: all clean plots
+
+EXES = mainA mainB
+DAT = erf_acc.dat erf_plot.dat
+PDF = erf_conv.pdf erf_plot.pdf
+TXT = mainA_output.txt
+
+all: $(EXES) $(DAT) $(PDF) $(TXT)
 
 mainA: main-hppA.cc quadinteg.hpp
 	$(CXX) $(CXXFLAGS) -o mainA main-hppA.cc
@@ -9,17 +17,18 @@ mainA: main-hppA.cc quadinteg.hpp
 mainB: main-hppB.cc quadinteg.hpp
 	$(CXX) $(CXXFLAGS) -o mainB main-hppB.cc
 
-runA: mainA
-	./mainA
+$(TXT): mainA
+	./mainA > $@
 
-runB: mainB
-	./mainB
+$(DAT): $(TXT)
 
-plotA:
-	gnuplot plotA.gp
+erf_conv.pdf: plotA.gp erf_acc.dat
+	$(GNUPLOT) plotA.gp
 
-python_compare:
-	python3 compare_python.py
+erf_plot.pdf: plot_erf.gp erf_plot.dat
+	$(GNUPLOT) plot_erf.gp
 
-claen:
-	rm -f mainA mainB *.dat *.pdf
+plots: $(PDF)
+
+clean:
+	rm -f $(EXES) $(DAT) $(PDF) $(TXT)
