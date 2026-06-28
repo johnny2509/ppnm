@@ -1,29 +1,32 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
+GNUPLOT = gnuplot
 
-all: mainA mainB
+.PHONY: all clean plots
+
+EXES = mainA mainB
+TXT_A = outA.txt
+TXT_B = wavefunctionB.txt convergence_rmaxB.txt convergence_rminB.txt convergence_accB.txt convergence_epsB.txt outB.txt
+PNG = wavefunctionB.png convergence_rmaxB.png convergence_rminB.png convergence_accB.png convergence_epsB.png
+
+all: $(EXES) $(TXT_A) $(TXT_B) $(PNG)
 
 mainA: mainA.cc matrix.hpp newton.hpp 
 	$(CXX) $(CXXFLAGS) mainA.cc -o mainA
 
-runA: mainA
-	./mainA > outA.txt
-
 mainB: mainB.cc matrix.hpp ode.hpp newton.hpp  
 	$(CXX) $(CXXFLAGS) mainB.cc -o mainB
 
-runB: mainB
+$(TXT_A): mainA
+	./mainA > $@
+
+$(TXT_B): mainB
 	./mainB > outB.txt
 
-wavefunctionB.txt convergence_rmaxB.txt convergence_rminB.txt convergence_accB.txt convergence_epsB.txt: mainB
-	./mainB > outB.txt
+$(PNG): plotB.gp $(TXT_B)
+	$(GNUPLOT) plotB.gp
 
-plotB: wavefunctionB.txt convergence_rmaxB.txt convergence_rminB.txt convergence_accB.txt convergence_epsB.txt
-	gnuplot plotB.gp
-
-run: runA runB
-
-plots: plotB
+plots: $(PNG)
 
 clean:
-	rm -f mainA mainB outA.txt outB.txt wavefunctionB.txt convergence_rmaxB.txt convergence_rminB.txt convergence_accB.txt convergence_epsB.txt wavefunctionB.png convergence_rmaxB.png convergence_rminB.png convergence_accB.png convergence_epsB.png
+	rm -f $(EXES) $(TXT_A) $(TXT_B) $(PNG)
