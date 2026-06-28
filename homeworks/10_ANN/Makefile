@@ -1,29 +1,34 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
+GNUPLOT = gnuplot
 
-mainA: mainA.cc 
+.PHONY: all clean plots
+
+EXES = mainA mainB
+TXT = outA.txt outB.txt
+PNG = ann.png annB.png derivativeB.png second_derivativeB.png anti_derivativeB.png
+
+all: $(EXES) $(TXT) $(PNG)
+
+mainA: mainA.cc ann.hpp matrix.hpp min.hpp
 	$(CXX) $(CXXFLAGS) mainA.cc -o mainA
 
-runA: mainA
-	./mainA > outA.txt
-
-outA.txt: mainA
-	./mainA > outA.txt
-
-plotA: outA.txt
-	gnuplot plotA.gp
-
-mainB: mainB.cc 
+mainB: mainB.cc ann.hpp matrix.hpp min.hpp
 	$(CXX) $(CXXFLAGS) mainB.cc -o mainB
 
-runB: mainB
-	./mainB > outB.txt
+outA.txt: mainA
+	./mainA
 
 outB.txt: mainB
-	./mainB > outB.txt
+	./mainB
 
-plotB: outB.txt
-	gnuplot plotB.gp
+ann.png: plotA.gp outA.txt
+	$(GNUPLOT) plotA.gp
+
+annB.png derivativeB.png second_derivativeB.png anti_derivativeB.png: plotB.gp outB.txt
+	$(GNUPLOT) plotB.gp
+
+plots: $(PNG)
 
 clean:
-	rm -f mainA mainB outA.txt outB.txt ann.png annB.png derivativeB.png second_derivativeB.png anti_derivativeB.png
+	rm -f $(EXES) $(TXT) $(PNG)
