@@ -39,18 +39,18 @@ int main(){
     }
     sqrt_out.close();
 
-    //std::ofstream inv_sqrt_out("inv_sqrt_calls_quad.dat");
-    //for(double acc=1e-1; acc>=1e-8; acc/=10.0){
-    //    int calls = 0;
-    //    auto f = [&](double x){
-    //        calls++;
-    //        return 1.0/std::sqrt(x);
-    //    };
-    //    double result = pp::integrate(f, 0.0, 1.0, acc, 0.0);
-    //    double error = std::abs(result-2.0);
-    //    inv_sqrt_out << acc << " " << calls << " " << error << "\n";
-    //}
-    //inv_sqrt_out.close();
+    std::ofstream inv_sqrt_out("inv_sqrt_calls_quad.dat");
+    for(double acc=1e-1; acc>=1e-8; acc/=10.0){
+        int calls = 0;
+        auto f = [&](double x){
+            calls++;
+            return 1.0/std::sqrt(x);
+        };
+        double result = pp::integrate(f, 0.0, 1.0, acc, 0.0);
+        double error = std::abs(result-2.0);
+        inv_sqrt_out << acc << " " << calls << " " << error << "\n";
+    }
+    inv_sqrt_out.close();
 
     std::ofstream nested_out("nested_calls_quad.dat");
     for(double acc=1e-1; acc>=1e-8; acc/=10.0){
@@ -65,18 +65,18 @@ int main(){
     }
     nested_out.close();
 
-    //std::ofstream ln_sqrt_out("ln_sqrt_calls_quad.dat");
-    //for(double acc=1e-1; acc>=1e-8; acc/=10.0){
-    //    int calls = 0;
-    //    auto f = [&](double x){
-    //        calls++;
-    //        return std::log(x)/std::sqrt(x);
-    //    };
-    //    double result = pp::integrate(f, 0.0, 1.0, acc, 0.0);
-    //    double error = std::abs(result-(-4.0));
-    //    ln_sqrt_out << acc << " " << calls << " " << error << "\n";
-    //}
-    //ln_sqrt_out.close();
+    std::ofstream ln_sqrt_out("ln_sqrt_calls_quad.dat");
+    for(double acc=1e-1; acc>=1e-8; acc/=10.0){
+        int calls = 0;
+        auto f = [&](double x){
+            calls++;
+            return std::log(x)/std::sqrt(x);
+        };
+        double result = pp::integrate(f, 0.0, 1.0, acc, 0.0);
+        double error = std::abs(result-(-4.0));
+        ln_sqrt_out << acc << " " << calls << " " << error << "\n";
+    }
+    ln_sqrt_out.close();
 
 	return 0;
 

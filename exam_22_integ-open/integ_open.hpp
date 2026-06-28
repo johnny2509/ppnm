@@ -99,4 +99,21 @@ inline double erf_integral(double z, double acc=1e-6, double eps=1e-6){
 	return 1 - 2/std::sqrt(pi)*integrate(f, 0.0, 1.0, acc, eps);
 }
 
+template<typename F>
+double integrate_cc(
+	F f,
+	double a,
+	double b,
+	double acc = 1e-3,
+	double eps = 1e-3
+){
+	double pi = std::acos(-1.0);
+    auto g = [&](double theta){
+		double x = (a+b)/2.0 + (b-a)/2.0*std::cos(theta);
+        double dx_dtheta_abs = (b-a)/2.0*std::sin(theta); // Chat GPT Instant 5.3
+		return f(x)*dx_dtheta_abs;
+	};
+	return integrate(g, 0.0, pi, acc, eps);
+}
+
 }
