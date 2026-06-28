@@ -11,7 +11,13 @@ template<typename F>
 double adapt(
     F f,
     double a,
-    double b
+    double b,
+    double acc,
+    double eps,
+    double f1,
+    double f2,
+    double f3,
+    double f4
 ){
     double h = b-a;
     
@@ -71,6 +77,26 @@ double integrate(
 
     return adapt(f, a, b, acc, eps, f1, f2, f3, f4);
 
+}
+
+// Added from the 06_Quad homework
+
+inline double erf_integral(double z, double acc=1e-6, double eps=1e-6){
+	const double pi = std::acos(-1.0);
+	if(z<0){ 
+		return -erf_integral(-z, acc, eps);
+	}
+	if(z<=1){
+		auto f = [](double x){
+			return std::exp(-x*x);
+		};
+		return 2/std::sqrt(pi) * integrate(f, 0.0, z, acc, eps);
+	}
+	auto f = [z](double t){
+		double u = z+(1-t)/t;
+		return std::exp(-u*u)/(t*t);
+	};	
+	return 1 - 2/std::sqrt(pi)*integrate(f, 0.0, 1.0, acc, eps);
 }
 
 }
