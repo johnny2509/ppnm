@@ -12,9 +12,9 @@ generated_data = \
 	ln_sqrt_calls_open_cc.dat \
 	erf_calls_quad.dat \
 	sqrt_calls_quad.dat \
-	inv_sqrt_calls_quad.dat \
+	inv_sqrt_calls_quad_cc.dat \
 	nested_calls_quad.dat \
-	ln_sqrt_calls_quad.dat
+	ln_sqrt_calls_quad_cc.dat
 
 generated_plots = \
 	erf_plot_open.pdf \

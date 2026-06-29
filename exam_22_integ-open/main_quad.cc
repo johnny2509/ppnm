@@ -2,17 +2,17 @@
 #include <iomanip>
 #include <cmath>
 #include <fstream>
+#include <exception>
 #include "quadinteg.hpp"
 
 // Modified from the 06_Quad homework (original: main-hppB.cc)
-// This block of code was realized with Chat GPT Instant 5.3
 
 int main(){
 	
     double exact_erf1 = 0.84270079294971486934;
     double pi = std::acos(-1.0);
 
-    std::ofstream erf_out("erf_calls_quad.dat");
+    std::ofstream erf_out("erf_calls_quad.dat"); // Claude Haiku 4.5
     for(double acc=1e-1; acc>=1e-8; acc/=10.0){
         int calls = 0;
         auto f = [&](double x){
@@ -26,7 +26,7 @@ int main(){
     }
     erf_out.close();
 
-    std::ofstream sqrt_out("sqrt_calls_quad.dat");
+    std::ofstream sqrt_out("sqrt_calls_quad.dat"); // Claude Haiku 4.5
     for(double acc=1e-1; acc>=1e-8; acc/=10.0){
         int calls = 0;
         auto f = [&](double x){
@@ -39,20 +39,20 @@ int main(){
     }
     sqrt_out.close();
 
-    std::ofstream inv_sqrt_out("inv_sqrt_calls_quad.dat");
+    std::ofstream inv_sqrt_out("inv_sqrt_calls_quad_cc.dat"); // Claude Haiku 4.5
     for(double acc=1e-1; acc>=1e-8; acc/=10.0){
         int calls = 0;
         auto f = [&](double x){
             calls++;
             return 1.0/std::sqrt(x);
         };
-        double result = pp::integrate(f, 0.0, 1.0, acc, 0.0);
+        double result = pp::clenshaw_curtis(f, 0.0, 1.0, acc, 0.0);
         double error = std::abs(result-2.0);
         inv_sqrt_out << acc << " " << calls << " " << error << "\n";
     }
     inv_sqrt_out.close();
 
-    std::ofstream nested_out("nested_calls_quad.dat");
+    std::ofstream nested_out("nested_calls_quad.dat"); // Claude Haiku 4.5
     for(double acc=1e-1; acc>=1e-8; acc/=10.0){
         int calls = 0;
         auto f = [&](double x){
@@ -65,16 +65,26 @@ int main(){
     }
     nested_out.close();
 
-    std::ofstream ln_sqrt_out("ln_sqrt_calls_quad.dat");
+    std::ofstream ln_sqrt_out("ln_sqrt_calls_quad_cc.dat"); // Claude Haiku 4.5
     for(double acc=1e-1; acc>=1e-8; acc/=10.0){
         int calls = 0;
         auto f = [&](double x){
             calls++;
             return std::log(x)/std::sqrt(x);
         };
-        double result = pp::integrate(f, 0.0, 1.0, acc, 0.0);
-        double error = std::abs(result-(-4.0));
-        ln_sqrt_out << acc << " " << calls << " " << error << "\n";
+
+        try{ // Claude Haiku 4.5
+            double result = pp::clenshaw_curtis(f, 0.0, 1.0, acc, 0.0);
+            double error = std::abs(result-(-4.0));
+
+            ln_sqrt_out << acc << " " << calls << " " << error << "\n";
+
+            std::cerr << "success: acc = " << acc << ", calls = " << calls << ", error = " << error << "\n"; // Claude Haiku 4.5
+        }
+
+        catch(const std::exception& e){
+            std::cerr << "failed: acc = " << acc << ", calls = " << calls << ", reason: " << e.what() << "\n";
+        }
     }
     ln_sqrt_out.close();
 

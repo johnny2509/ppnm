@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 #include <limits>
+#include <stdexcept>
 
 // This block of code was realized with Chat GPT Instant 5.3
 
@@ -14,8 +15,14 @@ double integrate(
 	double acc=1e-3,
 	double eps=1e-3,
 	double f2=std::numeric_limits<double>::quiet_NaN(),
-	double f3=std::numeric_limits<double>::quiet_NaN()
+	double f3=std::numeric_limits<double>::quiet_NaN(),
+	int depth = 0, // Chat GPT Instant 5.3
+	int max_depth = 15000 // Chat GPT Instant 5.3
 ){
+	if(depth > max_depth){
+		throw std::runtime_error("Maximum recursion depth exceeded in integrate"); // Chat GPT Instant 5.3
+	}
+	
 	double h = b-a;
 
 	if(std::isnan(f2)){ // first call, no points to reuse
@@ -30,14 +37,18 @@ double integrate(
 
 	double err = std::abs(Q-q); 
 	double tol = acc+eps*abs(Q);
+
+	if(!std::isfinite(Q) || !std::isfinite(q) || !std::isfinite(err) || !std::isfinite(tol)){ // Chat GPT Instant 5.3
+		throw std::runtime_error("non-finite value in integrate"); // Chat GPT Instant 5.3
+	}
  
 	if(err < tol){ 
 		return Q;
 	}
 	else{
 		double mid = (a+b)/2;
-		return integrate(f, a, mid, acc/std::sqrt(2.0), eps, f1, f2)
-		+ integrate(f, mid, b, acc/std::sqrt(2.0), eps, f3, f4);
+		return integrate(f, a, mid, acc/std::sqrt(2.0), eps, f1, f2, depth+1, max_depth)
+		+ integrate(f, mid, b, acc/std::sqrt(2.0), eps, f3, f4, depth+1, max_depth);
 	}
 }
 
@@ -51,8 +62,13 @@ double clenshaw_curtis(
 	double eps = 1e-3
 ){
 	auto g = [=](double theta){
-		double x = (a+b)/2 + (b-a)/2*std::cos(theta);
-		return f(x)*std::sin(theta)*(b-a)/2;
+		double c = std::cos(theta/2.0); // Chat GPT Instant 5.3
+		double s = std::sin(theta/2.0); // Chat GPT Instant 5.3
+
+		double x = a + (b-a)*c*c; // Chat GPT Instant 5.3
+		double dx_dtheta_abs = (b-a)*s*c; // Chat GPT Instant 5.3
+
+		return f(x)*dx_dtheta_abs;
 	};
 	return integrate(g, 0.0, std::acos(-1.0), acc, eps);
 }
