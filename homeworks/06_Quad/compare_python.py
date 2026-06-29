@@ -13,7 +13,7 @@ def count_calls(f):
 tests = [
     ("1/sqrt(x)", lambda x: 1/math.sqrt(x), 0, 1, 2),
     ("log(x)/sqrt(x)", lambda x: math.log(x)/math.sqrt(x), 0, 1, 4),
-    ("esp(-x*x)", lambda x: math.exp(-x*x), -math.inf, math.inf, math.sqrt(math.pi)),
+    ("exp(-x*x)", lambda x: math.exp(-x*x), -math.inf, math.inf, math.sqrt(math.pi)),
 ]
 
 for name, f, a, b, exact in tests:

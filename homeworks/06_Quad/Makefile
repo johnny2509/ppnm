@@ -7,7 +7,7 @@ GNUPLOT = gnuplot
 EXES = mainA mainB
 DAT = erf_acc.dat erf_plot.dat
 PDF = erf_conv.pdf erf_plot.pdf
-TXT = mainA_output.txt
+TXT = mainA_output.txt mainB_output.txt
 
 all: $(EXES) $(DAT) $(PDF) $(TXT)
 
@@ -17,8 +17,14 @@ mainA: main-hppA.cc quadinteg.hpp
 mainB: main-hppB.cc quadinteg.hpp
 	$(CXX) $(CXXFLAGS) -o mainB main-hppB.cc
 
-$(TXT): mainA
+mainA_output.txt: mainA
 	./mainA > $@
+
+mainB_output.txt: mainB compare_python.py
+	./mainB > $@
+	@echo "" >> $@
+	@echo "=== compare_python.py output ===" >> $@
+	@python3 compare_python.py >> $@
 
 $(DAT): $(TXT)
 
