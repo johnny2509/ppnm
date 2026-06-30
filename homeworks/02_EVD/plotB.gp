@@ -18,4 +18,14 @@ set ylabel "epsilon_0"
 set grid
 plot "vary_eps2B.dat" using 1:2 with linespoints title "numerically calculated", \
 	-0.5 with lines title "exact"
-	
+
+### Plot 3: ground-state and first excited wavefunctions
+set output "wavefunc_01.png"
+set title "Lowest hydrogen s-wave reduced radial wavefunctions"
+set xlabel "r"
+set ylabel "f(r)"
+set grid
+plot "wavefunc_0.dat" using 1:2 with linespoints title "numerical f0(r)", \
+	"wavefunc_0.dat" using 1:3 with lines title "analytic n=1", \
+	"wavefunc_1.dat" using 1:2 with linespoints title "numerical f1(r)", \
+	"wavefunc_1.dat" using 1:3 with lines title "analytic n=2"

@@ -6,7 +6,7 @@ GNUPLOT = gnuplot
 
 EXES = mainA mainB
 
-all: $(EXES) print_statements.txt plots
+all: $(EXES) print_statements.txt print_statementsB.txt plots
 
 mainA: main-hppA.cc eigen.hpp matrix.hpp
 	$(CXX) $(CXXFLAGS) main-hppA.cc -o mainA
@@ -21,8 +21,14 @@ print_statements.txt: $(EXES)
 	echo "\n=== Output from mainB ===" >> $@
 	./mainB >> $@ 2>&1
 
-plots: plotB.gp vary_epsB.dat vary_eps2B.dat
+print_statementsB.txt: mainB
+	./mainB -rmax 10 -dr 0.10 > $@
+
+plots: plotB.gp vary_epsB.dat vary_eps2B.dat wavefunc_0.dat wavefunc_1.dat
 	$(GNUPLOT) plotB.gp
+
+wavefunc_0.dat wavefunc_1.dat: mainB
+	./mainB -rmax 10 -dr 0.10
 
 vary_epsB.dat: mainB
 	> $@
@@ -39,4 +45,4 @@ vary_eps2B.dat: mainB
 	done
 
 clean:
-	rm -f $(EXES) print_statements.txt eps0_vs_dr.png eps0_vs_rmax.png vary_eps2B.dat vary_epsB.dat
+	rm -f $(EXES) print_statements.txt print_statementsB.txt eps0_vs_dr.png eps0_vs_rmax.png wavefunc_01.png wavefunc_0.png vary_eps2B.dat vary_epsB.dat wavefunc_0.dat wavefunc_1.dat
